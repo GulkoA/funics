@@ -1,6 +1,8 @@
 import requests
 import json
+import os
 
+    
 def get_merriam_webster_data(word, api_key):
     """
     Retrieves pronunciation and definition data from the Merriam-Webster Elementary Dictionary API.
@@ -50,7 +52,13 @@ def get_merriam_webster_data(word, api_key):
                         subdirectory = audio[0].lower()
                     
                     audio_link = f"https://media.merriam-webster.com/audio/prons/en/us/mp3/{subdirectory}/{audio}.mp3" # Using MP3 as default
-                    pronunciations.append({'pronunciation': pronunciation, 'audio_link': audio_link})
+                    # Download the MP3 file
+                    downloaded_file = download_mp3(audio_link, word)
+                    pronunciations.append({
+                        'pronunciation': pronunciation, 
+                        'audio_link': audio_link,
+                        'local_audio_file': downloaded_file
+                    })
                 else:
                     pronunciations.append({'pronunciation': pronunciation}) # Handle entries without audio
         
@@ -78,7 +86,34 @@ def get_merriam_webster_data(word, api_key):
         print(f"Error decoding JSON response: {e}")
         return None
 
+def download_mp3(url, word):
+    """
+    Downloads the MP3 file from the given URL.
 
+    Args:
+        url: The URL of the MP3 file.
+        word: The word associated with the pronunciation.
+
+    Returns:
+        The path to the downloaded file, or None if download fails.
+    """
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+
+        # Create a 'pronunciations' directory if it doesn't exist
+        os.makedirs('pronunciations', exist_ok=True)
+
+        # Save the file
+        filename = f"pronunciations/{word}.mp3"
+        with open(filename, 'wb') as file:
+            file.write(response.content)
+        
+        print(f"Successfully downloaded pronunciation for '{word}'")
+        return filename
+    except requests.exceptions.RequestException as e:
+        print(f"Error downloading MP3: {e}")
+        return None
 
 
 
