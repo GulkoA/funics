@@ -3,7 +3,7 @@ import json
 
 def get_merriam_webster_data(word, api_key):
     """
-    Retrieves pronunciation and definition data from the Merriam-Webster Collegiate Dictionary API.
+    Retrieves pronunciation and definition data from the Merriam-Webster Elementary Dictionary API.
 
     Args:
         word: The word to look up.
