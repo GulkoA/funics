@@ -1,4 +1,4 @@
-from server.dictionary import Dictionary
+from dictionary import Dictionary
 
 class WordNet:
     def __init__(self, dictionary: Dictionary):
@@ -9,8 +9,8 @@ class WordNet:
             sound_node = SoundNode(sound)
             self.sounds.append(sound_node)
 
-    def add_word(self, word):
-        word_node = WordNode(word)
+    def add_word(self, word, transcription, audio):
+        word_node = WordNode(word, transcription, audio)
         self.words.append(word_node)
 
         for sound in word_node.transcription:
@@ -22,6 +22,8 @@ class WordNet:
             word_node.sounds.append(sound_node)
             sound_node.words.append(word_node)
 
+    def get_word(self, word):
+        min_score
             
 
 class WordNode:
@@ -31,7 +33,11 @@ class WordNode:
         self.audio = audio
         self.sounds = []
 
+    def sound_score(self):
+        return sum(sound.score for sound in self.sounds)
+
 class SoundNode:
     def __init__(self, sound):
         self.sound = sound
         self.words = []
+        self.score = 0
