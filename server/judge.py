@@ -13,7 +13,7 @@ class Judge():
 
     def get_score(self, audio, word):
       predicted_word = self.whisper(audio)
-      confidence = self.whisper.getConfidenceScore(audio)
+      confidence = self.whisper.getConfidenceScore()
 
       if predicted_word == word and confidence > THRESHOLD:
         return 1

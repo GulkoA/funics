@@ -1,7 +1,12 @@
 import io
+import os
+import subprocess
 from flask import Flask, request, url_for, send_from_directory
 import uuid
 import soundfile as sf
+# from pydub import AudioSegment
+# import moviepy.editor as moviepy
+
 
 from dictionary import Dictionary
 from word_net import WordNet
@@ -17,7 +22,7 @@ wordnet = WordNet(dictionary)
 print(f"Loaded {len(wordnet.words)} words and {len(wordnet.sounds)} sounds")
 judge = Judge(wordnet)
 
-word = "green"
+global_word = "up"
 
 
 @app.route("/")
@@ -41,7 +46,7 @@ def cache(path):
 def get_word():
     # get word from database
     word = wordnet.get_min_word()
-
+    global_word = word.word
     return {
         "word": word.word,
         "audioURL": word.audio
@@ -52,32 +57,28 @@ def get_word():
 
 @app.route("/api/submit-audio", methods=["POST"], )
 def submit_audio():
+    # blob
     file = request.files['audio']
 
     # Write the data to a file.
-    file.save("../cache/audio.wav")
+    file.save("./cache/audio.webm")
 
-    # Jump back to the beginning of the file.
-    file.seek(0)
+    convert("./cache/audio.webm", "./cache/audio.mp3")
+    # audio = AudioSegment.from_file("./cache/audio.webm", "webm")
+    # audio.export("audio.wav", format="wav")
 
-    # Read the audio data again.
-    data, samplerate = sf.read(file)
-    with io.BytesIO() as fio:
-        sf.write(
-            fio,
-            data,
-            samplerate=samplerate,
-            subtype='PCM_16',
-            format='wav'
-        )
-        data = fio.getvalue()
 
     # audio_file = request.files['audio']
     # file_id = uuid.uuid4()
     # audio_file.save(f"../cache/{file_id}.wav")
 
-    # good = judge.judge(f"../cache/{file_id}.wav", word)
+    good = judge.judge(f"./cache/audio.mp3", global_word)
 
-    # return {
-    #     "good": good
-    # }
+    return {
+        "good": good
+    }
+
+def convert(input_path, output_path):
+    command = ['ffmpeg', '-i', input_path, output_path, '-y']
+    os.system(' '.join(command))
+

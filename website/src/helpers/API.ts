@@ -7,18 +7,17 @@ export default class API {
   }
 
   static async sendAudio(blob: Blob) {
-    // const audioFile = new File([blob], "audio-file.webm", { type: "audio/webm" });
-    // console.log("Audio File:", audioFile);  // Log file details
-
+    const audioFile = new File([blob], "audio-file.webm", { type: "audio/webm" });
+    console.log("Audio File:", audioFile);  // Log file details
+  
     const formData = new FormData();
-    // formData.append("audio", audioFile, "audio-file.webm");
-    formData.append("audio", blob);
-
+    formData.append("audio", audioFile, "audio-file.webm");
+  
     const response = await fetch("/api/submit-audio", {
       method: "POST",
       body: formData,
     });
-
+  
     return await response.json();
   }
 
