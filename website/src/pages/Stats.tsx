@@ -1,12 +1,36 @@
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import { useEffect } from "react";
+import ReactApexChart from "react-apexcharts";
+
+const stuff = {
+  series: [{
+    name: 'Series 1',
+    data: [8, 5, 3, 4, 10, 2, 8, 5, 3, 4, 10, 2],
+  }],
+  options: {
+    // chart: {
+    //   height: 35,
+    //   type: 'radar',
+    // },
+    title: {
+      text: ''
+    },
+    yaxis: {
+      stepSize: 2
+    },
+    xaxis: {
+      categories: ['January', 'February', 'March', 'April', 'May', '1June', '1January', '1February', '1March', '1April', '1May', '1June']
+    }
+  },
+};
 
 export default function Stats({ loggedIn, setLoggedIn }:
   {
     loggedIn: boolean;
     setLoggedIn: (value: boolean) => void;
   }) {
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,7 +50,13 @@ export default function Stats({ loggedIn, setLoggedIn }:
       <Header setLoggedIn={setLoggedIn} />
       <div>
         <h1>Statistics</h1>
-        <p>Your child struggles with the following Phonemes: </p>
+
+        <ReactApexChart
+          series={stuff.series}
+          options={stuff.options}
+          type="radar"
+          height={350}
+        />
       </div>
     </div>
   ) : (
