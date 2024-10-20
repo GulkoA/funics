@@ -10,9 +10,8 @@ class Whisper:
         self.processor = WhisperProcessor.from_pretrained("openai/whisper-medium")
         self.model = WhisperForConditionalGeneration.from_pretrained("openai/whisper-medium")
 
-    def __call__(self, audio):
-        data, samplerate = audio
-        # data, samplerate = sf.read(fileName) # Extracting the information and sample rate of the audio from the audio file
+    def __call__(self, fileName):
+        data, samplerate = sf.read(fileName) # Extracting the information and sample rate of the audio from the audio file
         
         if len(data.shape) >= 2:
             data = np.sum(data, axis = -1)
@@ -24,9 +23,8 @@ class Whisper:
       
         return self.processor.batch_decode(output, skip_special_tokens=True)[0]
         
-    def getConfidenceScore(self, audio):
-        data, samplerate = audio
-        # data, samplerate = sf.read(fileName) # Extracting the information and sample rate of the audio from the audio file
+    def getConfidenceScore(self, fileName):
+        data, samplerate = sf.read(fileName) # Extracting the information and sample rate of the audio from the audio file
        
         if len(data.shape) >= 2:
             data = np.sum(data, axis = -1)
