@@ -9,7 +9,7 @@ import { Box, CircularProgress, Modal } from "@mui/material";
 
 export default function Practice({ setLoggedIn }: { setLoggedIn: (value: boolean) => void }) {
   const [listening, setListening] = useState(false);
-  const [word, setWord] = useState("bob");
+  const [word, setWord] = useState("");
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
   const [loadingModal, setLoadingModal] = useState(false);
 
