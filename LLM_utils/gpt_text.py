@@ -25,7 +25,6 @@ class OpenAI_text:
         # Extract the assistant's reply from the response
         return response_text
         
-
 if __name__ == "__main__":
     # for i in range(20):
     text_engine = OpenAI_text()
