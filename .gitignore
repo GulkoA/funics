@@ -1,4 +1,6 @@
 .venv
+.env
+pronunciations
 node_modules
 __pycache__
 dist/
