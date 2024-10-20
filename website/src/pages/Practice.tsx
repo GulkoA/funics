@@ -1,10 +1,18 @@
 import Header from "../components/Header"
 import MicIcon from '@mui/icons-material/Mic';
 import StopCircleOutlinedIcon from '@mui/icons-material/StopCircleOutlined';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import API from "../helpers/API";
 
 export default function Practice({ setLoggedIn }: { setLoggedIn: (value: boolean) => void }) {
   const [listening, setListening] = useState(false);
+  const [word, setWord] = useState("");
+
+  useEffect(() => {
+    (async () => {
+      setWord((await API.get_word()).word);
+    })();
+  }, []);
 
   function switchListening() {
     setListening((oldListening) => !oldListening);
@@ -16,7 +24,7 @@ export default function Practice({ setLoggedIn }: { setLoggedIn: (value: boolean
       <p className="say">Say</p>
       <div className="wordToSayBox">
         <div className="wordToSayBox2">
-          <h1 className="wordToSay">this</h1>
+          <h1 className="wordToSay">{word}</h1>
         </div>
       </div>
 
