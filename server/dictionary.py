@@ -9,8 +9,8 @@
 import json
 
 class Dictionary():
-  def __init__(self):
-    with open('../vocab.json') as f:
+  def __init__(self, path):
+    with open(path) as f:
       self.dictionary = json.load(f)
 
   def get_words(self):

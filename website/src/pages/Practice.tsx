@@ -106,6 +106,7 @@ export default function Practice({ setLoggedIn }: { setLoggedIn: (value: boolean
             noiseSuppression: true,
             echoCancellation: true,
           }}
+          downloadFileExtension="wav"
           recorderControls={recorderControls}
         />
       </div>
