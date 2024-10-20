@@ -24,8 +24,10 @@ export default function Stats({ loggedIn, setLoggedIn }:
   return loggedIn ? (
     <div className="page">
       <Header setLoggedIn={setLoggedIn} />
-      <h1>Sexy Statistics</h1>
-      <p>Your child is dumb </p>
+      <div>
+        <h1>Statistics</h1>
+        <p>Your child struggles with the following Phonemes: </p>
+      </div>
     </div>
   ) : (
     <div className="page">

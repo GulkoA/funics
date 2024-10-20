@@ -121,7 +121,7 @@ def download_mp3(url, word):
 # Example usage (replace with your API key):
 
 api_key = "413e9c1e-6813-49b5-b95a-aec07325f276"  
-word = "hello"
+word = "cow"
 
 word_data = get_merriam_webster_data(word, api_key)
 

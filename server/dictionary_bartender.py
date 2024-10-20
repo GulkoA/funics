@@ -15,6 +15,7 @@ with open('../vocab.json') as f:
 def get_words():
   return dictionary.keys()
 
+
 def get_word(word):
   return dictionary[word]
 

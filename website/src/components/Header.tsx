@@ -17,7 +17,7 @@ export default function Header({ setLoggedIn }: { setLoggedIn: (value: boolean) 
     )
   } else {
     navAway = (
-      <Link to="/" className='navAway'>Practice</Link>
+      <Link to="/" className='navToPractice'>Practice</Link>
     )
   }
 

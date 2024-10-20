@@ -10,6 +10,7 @@ class Llama_Inference:
             model=model_id, 
             torch_dtype=torch.bfloat16, 
             device_map="auto",
+            max_length = 50
         )
     
     def __call__(self, text):
@@ -18,10 +19,14 @@ class Llama_Inference:
 
 if __name__ == "__main__":
     inf_object = Llama_Inference()
-    prompt = "Generate a numbered list of three words that a child can pronounce : "
-    output = inf_object(prompt)
-    key_output = output[0]['generated_text'].split(":")[1]
-    print(key_output)
-    words = re.search("[0-9]. ", key_output)
-    print(output)
-    print(words)
+    for i in range(10):
+        prompt = "Give three words, comma seperated:"
+        # prompt = "What is the h\u0259-\u02c8l\u014d"
+        output = inf_object(prompt)
+        print(output)
+        key_output = output[0]['generated_text'].split(":")[1]
+        print(key_output)
+        words = re.split("[0-9]. ", key_output)
+        print(output)
+        print(words)
+
