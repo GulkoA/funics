@@ -3,17 +3,16 @@ import MicIcon from '@mui/icons-material/Mic';
 import StopCircleOutlinedIcon from '@mui/icons-material/StopCircleOutlined';
 import { useEffect, useState } from "react";
 import API from "../helpers/API";
-import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
 import confetti from 'canvas-confetti';
 import { Box, CircularProgress, Modal } from "@mui/material";
 
 export default function Practice({ setLoggedIn }: { setLoggedIn: (value: boolean) => void }) {
-  const [listening, setListening] = useState(false);
+  const [recording, setRecording] = useState(false);
+  const [stream, setStream] = useState<MediaStream | null>(null);
+
   const [word, setWord] = useState("");
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
   const [loadingModal, setLoadingModal] = useState(false);
-
-  const recorderControls = useAudioRecorder();
 
   useEffect(() => {
     (async () => {
@@ -23,27 +22,64 @@ export default function Practice({ setLoggedIn }: { setLoggedIn: (value: boolean
     })();
   }, []);
 
+  function startRecording() {
+    console.log("=recording started");
+    navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+      const audioChunks: Blob[] = [];
+
+      const mediaRecorder = new MediaRecorder(stream);
+
+      mediaRecorder.ondataavailable = (event) => {
+        audioChunks.push(event.data);
+      };
+
+      mediaRecorder.start();
+
+      setRecording(true);
+      setStream(stream);
+
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+        sendAudio(audioBlob);
+
+        // const audioURL = URL.createObjectURL(audioBlob);
+
+        // const fileName = "audio-file.wav";
+        // const audioFile = new File([audioBlob], fileName, {
+        //   type: "audio/wav",
+        // });
+
+        // API.sendAudio(audioFile);
+      };
+    });
+  };
+
+  function stopRecording() {
+    stream!.getTracks().forEach((track) => track.stop());
+    setRecording(false);
+    console.log("recording stopped");
+  };
+
   function switchListening() {
-    if (listening) {
-      recorderControls.stopRecording();
+    if (recording) {
+      stopRecording();
       console.log("Recording stopped");
     } else {
-      recorderControls.startRecording();
+      startRecording();
       console.log("Recording started");
     }
-    setListening((oldListening) => !oldListening);
   }
 
   async function sendAudio(blob: Blob) {
-    // console.log("Sending audio");
+    console.log("Sending audio");
 
-    // const audioUrl = URL.createObjectURL(blob);
-    // const audio = new Audio(audioUrl);
+    const audioUrl = URL.createObjectURL(blob);
+    const audio = new Audio(audioUrl);
 
-    // console.log("Playing audio");
+    console.log("Playing audio");
 
-    // audio.play();
-    // console.log("Audio played");
+    audio.play();
+    console.log("Audio played");
 
     setLoadingModal(true);
     const response = await API.sendAudio(blob);
@@ -94,21 +130,10 @@ export default function Practice({ setLoggedIn }: { setLoggedIn: (value: boolean
       <div onClick={() => {
         switchListening();
       }}>
-        {listening ?
+        {recording ?
           (<StopCircleOutlinedIcon className="mic" style={{ fontSize: "100" }} />) :
           (<MicIcon className="stopMi" style={{ fontSize: "100" }} />)
         }
-      </div>
-      <div className="hidden">
-        <AudioRecorder
-          onRecordingComplete={sendAudio}
-          audioTrackConstraints={{
-            // noiseSuppression: true,
-            // echoCancellation: true,
-          }}
-          downloadFileExtension="wav"
-          recorderControls={recorderControls}
-        />
       </div>
     </div>
   )
