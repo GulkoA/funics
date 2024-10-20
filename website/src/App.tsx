@@ -10,8 +10,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Practice />} />
-        <Route path="/stats" element={<Stats loggedIn={loggedIn} />} />
+        <Route path="/" element={<Practice setLoggedIn={setLoggedIn} />} />
+        <Route path="/stats" element={<Stats loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />
       </Routes>
     </Router>
   );

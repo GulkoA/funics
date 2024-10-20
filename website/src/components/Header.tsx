@@ -1,18 +1,23 @@
 import FunicsLogo from '../assets/funics_logo.png';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import SensorDoorOutlinedIcon from '@mui/icons-material/SensorDoorOutlined';
 
-export default function Header() {
+export default function Header({ setLoggedIn }: { setLoggedIn: (value: boolean) => void }) {
   const location = useLocation();
-  const home = location.pathname === '/';
+  const practice = location.pathname === '/';
   let navAway;
 
-  if (home) {
+  if (practice) {
     navAway = (
-      <a href="/stats" className='navAway'>Stats</a>
+      <Link to="/stats" className='navAway' onClick={() => {
+        setLoggedIn(false);
+      }}>
+        <SensorDoorOutlinedIcon className='navAway' style={{ fontSize: "40" }} />
+      </Link>
     )
   } else {
     navAway = (
-      <a href="/" className='navAway'>Practice</a>
+      <Link to="/" className='navAway'>Practice</Link>
     )
   }
 
