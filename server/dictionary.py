@@ -31,7 +31,7 @@ class Dictionary():
   def get_all_sounds(self):
     sounds = set()
     for word, value in self.dictionary.items():
-      transcription = self.get_transcription(value)
+      transcription = self.get_stripped_transcription(value)
       for sound in transcription:
         sounds.add(sound)
     return sounds

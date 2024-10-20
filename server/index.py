@@ -1,8 +1,6 @@
-import io
 from flask import Flask, request, url_for, send_from_directory
 import uuid
 import soundfile as sf
-import wave
 
 from dictionary import Dictionary
 from word_net import WordNet
@@ -53,35 +51,11 @@ def get_word():
 
 @app.route("/api/submit-audio", methods=["POST"], )
 def submit_audio():
-    if 'audio' not in request.files:
-        return {"error": "No audio file provided"}, 400
-
     audio_file = request.files['audio']
-    print(f"Received file: {audio_file.filename}, Content-Type: {audio_file.content_type}")
+    file_id = uuid.uuid4()
+    audio_file.save(f"./cache/{file_id}.webm")
 
-    try:
-        # Read the audio data into a BytesIO buffer
-        audio_data = io.BytesIO(audio_file.read())
-
-        # Open the WAV file and extract relevant data
-        with wave.open(audio_data, 'rb') as wav:
-            sample_rate = wav.getframerate()
-            num_channels = wav.getnchannels()
-            num_frames = wav.getnframes()
-            audio_frames = wav.readframes(num_frames)
-
-            print(f"Sample Rate: {sample_rate}, Channels: {num_channels}, Frames: {num_frames}")
-
-    except wave.Error as e:
-        print(f"Wave Error: {e}")
-        return {"error": str(e)}, 400
-
-    audio = (audio_frames, sample_rate)
-    # Perform your audio processing logic (assuming `judge` function is compatible)
-    good = judge.judge(audio, word)
-
-
-    good = judge.judge(audio_frames, word)
+    good = judge.judge(f"./cache/{file_id}.webm", word)
 
     return {
         "good": good
