@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 dist_folder = '../website/dist'
 
-dictionary = Dictionary('./vocab.json')
+dictionary = Dictionary('../vocab.json')
 wordnet = WordNet(dictionary)
 print(f"Loaded {len(wordnet.words)} words and {len(wordnet.sounds)} sounds")
 judge = Judge(wordnet)
@@ -53,9 +53,9 @@ def get_word():
 def submit_audio():
     audio_file = request.files['audio']
     file_id = uuid.uuid4()
-    audio_file.save(f"./cache/{file_id}.webm")
+    audio_file.save(f"./cache/{file_id}.wav")
 
-    good = judge.judge(f"./cache/{file_id}.webm", word)
+    good = judge.judge(f"./cache/{file_id}.wav", word)
 
     return {
         "good": good

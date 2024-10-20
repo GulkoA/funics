@@ -41,15 +41,6 @@ export default function Practice({ setLoggedIn }: { setLoggedIn: (value: boolean
       mediaRecorder.onstop = () => {
         const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
         sendAudio(audioBlob);
-
-        // const audioURL = URL.createObjectURL(audioBlob);
-
-        // const fileName = "audio-file.wav";
-        // const audioFile = new File([audioBlob], fileName, {
-        //   type: "audio/wav",
-        // });
-
-        // API.sendAudio(audioFile);
       };
     });
   };
