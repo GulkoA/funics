@@ -1,6 +1,10 @@
 from flask import Flask, request, url_for, send_from_directory
 import uuid
 
+from dictionary_bartender import *
+
+print(get_transcription("hello"))
+
 app = Flask(__name__)
 
 dist_folder = '../website/dist'
