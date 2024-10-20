@@ -5,11 +5,13 @@ import { useEffect, useState } from "react";
 import API from "../helpers/API";
 import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
 import confetti from 'canvas-confetti';
+import { Box, CircularProgress, Modal } from "@mui/material";
 
 export default function Practice({ setLoggedIn }: { setLoggedIn: (value: boolean) => void }) {
   const [listening, setListening] = useState(false);
   const [word, setWord] = useState("bob");
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
+  const [loadingModal, setLoadingModal] = useState(false);
 
   const recorderControls = useAudioRecorder();
 
@@ -32,7 +34,7 @@ export default function Practice({ setLoggedIn }: { setLoggedIn: (value: boolean
     setListening((oldListening) => !oldListening);
   }
 
-  function sendAudio(blob: Blob) {
+  async function sendAudio(blob: Blob) {
     // console.log("Sending audio");
 
     // const audioUrl = URL.createObjectURL(blob);
@@ -43,13 +45,21 @@ export default function Practice({ setLoggedIn }: { setLoggedIn: (value: boolean
     // audio.play();
     // console.log("Audio played");
 
-    API.sendAudio(blob);
+    setLoadingModal(true);
+    const response = await API.sendAudio(blob);
+    setLoadingModal(false);
 
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 }
-    });
+    if (response.good) {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    }
+
+    const wordData = await API.getWord();
+    setWord(wordData.word);
+    setAudio(new Audio(wordData.audioURL));
   }
 
   function sayWord() {
@@ -58,6 +68,14 @@ export default function Practice({ setLoggedIn }: { setLoggedIn: (value: boolean
 
   return (
     <div className="page">
+      <Modal
+        open={loadingModal}
+        sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      >
+        <Box sx={{ backgroundColor: '#000000', padding: '30px', borderRadius: '15px', userSelect: 'none' }}>
+          <CircularProgress />
+        </Box>
+      </Modal>
       <Header setLoggedIn={setLoggedIn} />
 
       <div className="fill" />

@@ -14,11 +14,13 @@ export default class API {
     const formData = new FormData();
     formData.append("audio", audioFile, "audio-file.mp3");
 
-    await fetch("http://127.0.0.1:5000/api/submit-audio", {
+    const response = await fetch("http://127.0.0.1:5000/api/submit-audio", {
       method: "POST",
       body: formData,
-    })
-      .then((response) => response.json())
-      .catch((error) => console.error("Error:", error));
+    });
+
+    return await response.json();
   }
+
+  static async getStats() {}
 }

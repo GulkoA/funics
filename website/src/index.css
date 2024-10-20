@@ -113,6 +113,7 @@ button:focus-visible {
   flex-direction: column;
 
   background-image: url("./assets/nice_grass.jpg");
+  background-size: cover;
 }
 
 .headerLogo {
