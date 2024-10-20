@@ -76,12 +76,11 @@ def submit_audio():
         print(f"Wave Error: {e}")
         return {"error": str(e)}, 400
 
-    audio = (audio_frames, sample_rate)
     # Perform your audio processing logic (assuming `judge` function is compatible)
-    good = judge.judge(audio, word)
-
-
     good = judge.judge(audio_frames, word)
+
+
+    good = judge.judge(audio, word)
 
     return {
         "good": good
