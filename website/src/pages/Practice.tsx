@@ -44,15 +44,15 @@ export default function Practice({ setLoggedIn }: { setLoggedIn: (value: boolean
     // console.log("Audio played");
 
     API.sendAudio(blob);
-  }
 
-  function sayWord() {
     confetti({
       particleCount: 100,
       spread: 70,
       origin: { y: 0.6 }
     });
+  }
 
+  function sayWord() {
     audio!.play();
   }
 
