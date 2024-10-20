@@ -1,6 +1,9 @@
 from flask import Flask, request, url_for, send_from_directory
 import uuid
 
+from dictionary import Dictionary
+from word_net import WordNet
+
 # from dictionary_bartender import *
 
 # print(get_transcription("hello"))
@@ -9,6 +12,8 @@ app = Flask(__name__)
 
 dist_folder = '../website/dist'
 
+dictionary = Dictionary()
+wordnet = WordNet(dictionary)
 
 @app.route("/")
 @app.route("/parent")

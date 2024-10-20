@@ -32,7 +32,6 @@ class Dictionary():
     sounds = set()
     for word, value in self.dictionary.items():
       transcription = self.get_transcription(value)
-      print(transcription)
       for sound in transcription:
         sounds.add(sound)
     return sounds
