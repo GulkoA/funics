@@ -39,7 +39,7 @@ export default function Practice({ setLoggedIn }: { setLoggedIn: (value: boolean
       setStream(stream);
 
       mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+        const audioBlob = new Blob(audioChunks, { type: 'audio/wav; codecs=MS_PCM' });
         sendAudio(audioBlob);
       };
     });
