@@ -3,15 +3,17 @@ import uuid
 
 app = Flask(__name__)
 
+dist_folder = '../website/dist'
+
 @app.route("/")
 @app.route("/parent")
 def serve_html():
-  return send_from_directory('static', 'index.html')
+  return send_from_directory(dist_folder, 'index.html')
 
-@app.route("/<path>")
-def serve_static(path):
-  print(path)
-  return send_from_directory('static', path)
+@app.route("/assets/<path>")
+def serve_assets(path):
+  print('path requested', path)
+  return send_from_directory(dist_folder + '/assets', path)
 
 @app.route("/cache/<path>")
 def cache(path):
@@ -31,9 +33,7 @@ def get_word():
 # post request
 @app.route("/api/submit-audio", methods=["POST"], )
 def submit_audio():
-  submission_id = uuid.uuid4()
   audio_file = request.files['audio']
-  audio_file.save(f"../cache/{submission_id}.wav")
   # analyze audio
 
 
