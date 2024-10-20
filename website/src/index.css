@@ -1,16 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&display=swap");
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Dosis", sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color-scheme: light;
+  color: rgba(25, 25, 25, 0.87);
+  background-color: #ffffff;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  margin: 0 0;
+  padding: 0;
 }
 
 a {
@@ -65,4 +72,99 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.navHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.1em 1em;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-height: 10%;
+}
+
+.page {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+
+  flex-direction: column;
+}
+
+.headerLogo {
+  max-width: 50%;
+  max-height: 90%;
+}
+
+.nav {
+  background-color: #ffffff;
+}
+
+.wordToSayBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wordToSayBox2 {
+  background-color: #fde240bf;
+  border-radius: 14px;
+  min-width: 50%;
+  animation: bounceOut 0.6s ease-in-out forwards;
+}
+
+@keyframes bounceOut {
+  0% {
+    transform: scale(0.8);
+  }
+  30% {
+    transform: scale(1.2);
+  }
+  60% {
+    transform: scale(0.85);
+  }
+  80% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.wordToSayBox2:active {
+  background-color: #fde240;
+  animation: bounceIn 0.3s ease-in-out forwards;
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0.8);
+  }
+}
+
+/* @keyframes bounce {
+  to {
+    transform: scale(1.2);
+  }
+} */
+
+.wordToSay {
+  /* padding: 10px; */
+  min-width: 50%;
+  margin: 10px 0px;
+  font-weight: bold;
+}
+
+.mic {
+  align-self: center;
+  margin: 20px;
+  color: #338ce8;
+}
+
+.fill {
+  flex: 1;
 }
