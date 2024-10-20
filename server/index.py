@@ -1,3 +1,4 @@
+import io
 from flask import Flask, request, url_for, send_from_directory
 import uuid
 import soundfile as sf
@@ -51,12 +52,32 @@ def get_word():
 
 @app.route("/api/submit-audio", methods=["POST"], )
 def submit_audio():
-    audio_file = request.files['audio']
-    file_id = uuid.uuid4()
-    audio_file.save(f"./cache/{file_id}.wav")
+    file = request.files['audio']
 
-    good = judge.judge(f"./cache/{file_id}.wav", word)
+    # Write the data to a file.
+    file.save("../cache/audio.wav")
 
-    return {
-        "good": good
-    }
+    # Jump back to the beginning of the file.
+    file.seek(0)
+
+    # Read the audio data again.
+    data, samplerate = sf.read(file)
+    with io.BytesIO() as fio:
+        sf.write(
+            fio,
+            data,
+            samplerate=samplerate,
+            subtype='PCM_16',
+            format='wav'
+        )
+        data = fio.getvalue()
+
+    # audio_file = request.files['audio']
+    # file_id = uuid.uuid4()
+    # audio_file.save(f"../cache/{file_id}.wav")
+
+    # good = judge.judge(f"../cache/{file_id}.wav", word)
+
+    # return {
+    #     "good": good
+    # }
