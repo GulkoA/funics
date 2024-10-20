@@ -1,25 +1,35 @@
-from dictionary_bartender import get_stripped_transcription, get_audio_url
+from server.dictionary import Dictionary
 
 class WordNet:
-    def __init__(self):
+    def __init__(self, dictionary: Dictionary):
         self.words: list[WordNode] = []
         self.sounds: list[SoundNode] = []
+
+        for sound in dictionary.get_all_sounds():
+            sound_node = SoundNode(sound)
+            self.sounds.append(sound_node)
 
     def add_word(self, word):
         word_node = WordNode(word)
         self.words.append(word_node)
 
-        for sound_node in self.sounds:
-            if word_node.sound in word_node.transcription:
-                word_node.sounds.append(sound_node)
-                sound_node.words.append(word_node)
+        for sound in word_node.transcription:
+            if any(sound_node.sound == sound for sound_node in self.sounds):
+                sound_node = next(sound_node for sound_node in self.sounds if sound_node.sound == sound)
+            else:
+                sound_node = SoundNode(sound)
+                self.sounds.append(sound_node)
+            word_node.sounds.append(sound_node)
+            sound_node.words.append(word_node)
+
+            
 
 class WordNode:
-    def __init__(self, word):
-      self.word = word
-      self.transcription = get_stripped_transcription(word)
-      self.audio = get_audio_url(word)
-      self.sounds = []
+    def __init__(self, word, transcription, audio):
+        self.word = word
+        self.transcription = transcription
+        self.audio = audio
+        self.sounds = []
 
 class SoundNode:
     def __init__(self, sound):
