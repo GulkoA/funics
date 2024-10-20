@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 dist_folder = '../website/dist'
 
-dictionary = Dictionary('../vocab.json')
+dictionary = Dictionary('./vocab.json')
 wordnet = WordNet(dictionary)
 print(f"Loaded {len(wordnet.words)} words and {len(wordnet.sounds)} sounds")
 judge = Judge(wordnet)
