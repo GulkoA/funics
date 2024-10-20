@@ -4,6 +4,7 @@ import StopCircleOutlinedIcon from '@mui/icons-material/StopCircleOutlined';
 import { useEffect, useState } from "react";
 import API from "../helpers/API";
 import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
+import confetti from 'canvas-confetti';
 
 export default function Practice({ setLoggedIn }: { setLoggedIn: (value: boolean) => void }) {
   const [listening, setListening] = useState(false);
@@ -46,6 +47,12 @@ export default function Practice({ setLoggedIn }: { setLoggedIn: (value: boolean
   }
 
   function sayWord() {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+
     audio!.play();
   }
 

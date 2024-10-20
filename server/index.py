@@ -1,9 +1,9 @@
 from flask import Flask, request, url_for, send_from_directory
 import uuid
 
-from dictionary_bartender import *
+# from dictionary_bartender import *
 
-print(get_transcription("hello"))
+# print(get_transcription("hello"))
 
 app = Flask(__name__)
 
@@ -43,7 +43,6 @@ def get_word():
 @app.route("/api/submit-audio", methods=["POST"], )
 def submit_audio():
     audio_file = request.files['audio']
-    # analyze audio
 
     good = True
     return {
