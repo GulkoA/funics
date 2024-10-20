@@ -103,8 +103,8 @@ export default function Practice({ setLoggedIn }: { setLoggedIn: (value: boolean
         <AudioRecorder
           onRecordingComplete={sendAudio}
           audioTrackConstraints={{
-            noiseSuppression: true,
-            echoCancellation: true,
+            // noiseSuppression: true,
+            // echoCancellation: true,
           }}
           recorderControls={recorderControls}
         />
